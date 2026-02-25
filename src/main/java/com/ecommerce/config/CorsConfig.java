@@ -15,7 +15,7 @@ public class CorsConfig {
     private String allowedOrigins;
 
     @Bean
-    public org.springframework.boot.web.servlet.FilterRegistrationBean<CorsFilter> corsFilter() {
+    public org.springframework.boot.web.servlet.FilterRegistrationBean<CorsFilter> customCorsFilterRegistrationBean() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
