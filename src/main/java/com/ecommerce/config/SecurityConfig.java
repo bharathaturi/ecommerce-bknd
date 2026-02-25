@@ -51,7 +51,11 @@ public class SecurityConfig {
                 .cors(org.springframework.security.config.Customizer.withDefaults()) // Use the CorsConfigurationSource
                                                                                      // bean
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Allow CORS
+                                                                                                         // preflight
+                                                                                                         // requests
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll() // Allow viewing products
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
