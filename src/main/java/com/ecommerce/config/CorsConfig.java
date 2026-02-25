@@ -15,17 +15,23 @@ public class CorsConfig {
     private String allowedOrigins;
 
     @Bean
-    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+    public org.springframework.boot.web.servlet.FilterRegistrationBean<CorsFilter> corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
         // Allow frontend URL from environment variable or default to localhost
         config.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        config.setAllowedHeaders(
+                Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Access-Control-Allow-Origin"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         source.registerCorsConfiguration("/**", config);
-        return source;
+
+        org.springframework.boot.web.servlet.FilterRegistrationBean<CorsFilter> bean = new org.springframework.boot.web.servlet.FilterRegistrationBean<>(
+                new CorsFilter(source));
+        // Set this filter to execute FIRST, before Spring Security
+        bean.setOrder(org.springframework.core.Ordered.HIGHEST_PRECEDENCE);
+        return bean;
     }
 }
