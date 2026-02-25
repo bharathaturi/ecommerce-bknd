@@ -20,8 +20,8 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        // Allow frontend URL from environment variable or default to localhost
-        config.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
+        // Allow all frontend origins to prevent environment variable misconfigurations
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedHeaders(
                 Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Access-Control-Allow-Origin"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
